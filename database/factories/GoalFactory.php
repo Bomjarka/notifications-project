@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class GoalFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::all()->random(1)->first()->id,
+            'message' => fake()->text(50),
+            'notify_at' => null,
         ];
     }
 }
