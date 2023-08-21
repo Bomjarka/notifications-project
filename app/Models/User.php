@@ -67,4 +67,9 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+    public function goals()
+    {
+        return $this->hasMany(Goal::class);
+    }
 }
