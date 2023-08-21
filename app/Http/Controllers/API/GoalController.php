@@ -8,6 +8,6 @@ class GoalController extends BaseControllers
 {
     public function index(User $user)
     {
-        $this->sendSuccess($user->goals, 'All user goals');
+        return $this->sendSuccess($user->goals, 'All user goals');
     }
 }
