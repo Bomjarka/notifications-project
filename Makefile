@@ -16,10 +16,10 @@ prepare-backend: ## Подготовка приложения
 			docker-compose exec $(APP_CONTAINER_NAME) composer install
 			docker-compose exec $(APP_CONTAINER_NAME) php artisan key:generate
 			docker-compose exec $(APP_CONTAINER_NAME) php artisan migrate:fresh
-			docker-compose exec $(APP_CONTAINER_NAME) php artisan db:seed --class=AdminSeeder
 			docker-compose exec $(APP_CONTAINER_NAME) php artisan db:seed
 			docker-compose exec $(APP_CONTAINER_NAME) php artisan storage:link
 			docker-compose exec $(APP_CONTAINER_NAME) php artisan optimize:clear
+			docker-compose exec $(APP_CONTAINER_NAME) php artisan orchid:admin admin admin@admin.com password
 build: ## Сборка контейнеров
 		$(shell docker-compose build)
 
