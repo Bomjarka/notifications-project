@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WEB\GoalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(static function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/{user}/goals', [GoalController::class, 'index'])->name('web.user.goals.index');
+    Route::get('/{user}/goals/{goal}', [GoalController::class, 'show'])->name('web.user.goal.show');
+});
+
+
+

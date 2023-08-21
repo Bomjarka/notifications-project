@@ -2,9 +2,19 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ *
+ * @property int $id
+ * @property  int $user_id
+ * @property string $name
+ * @property string $message
+ * @property Carbon $notify_at
+ *
+ */
 class Goal extends Model
 {
     use HasFactory;
