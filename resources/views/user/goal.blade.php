@@ -28,25 +28,33 @@
                                 </div>
                                 <div class="card-body" id="goal-edit-group" hidden>
                                     <label>Put new name:
-                                        <input id="goal-name" type="text" placeholder="{{ $goal->name }}" name="name"
+                                        <input id="goal-name" type="text" placeholder="{{ $goal->name }}"
+                                               value="{{ $goal->name }}" name="name"
                                                required>
                                     </label>
                                     <label>Put new message:
                                         <input id="goal-message" type="text" placeholder="{{ $goal->message }}"
+                                               value="{{ $goal->message }}"
                                                name="message" required>
                                     </label>
                                     <br>
                                     @if($goal->notify_at)
                                         <p class="card-text">Current notification: {{ $goal->notify_at }}</p>
                                     @endif
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="pick-date">
+                                        <label class="form-check-label" for="pick-date">
+                                            Change notification date
+                                        </label>
+                                    </div>
                                     <label for="goal-notification-date">Choose Notification Date:</label>
                                     <input id="goal-date" type="date" class="deal form-control mb-1"
                                            id="goal-notification-date"
-                                           aria-describedby="basic-addon3">
+                                           aria-describedby="basic-addon3" disabled>
                                     <label for="goal-notification-time">Choose Notification Time:</label>
                                     <input id="goal-time" type="time" class="deal form-control mb-1"
                                            id="goal-notification-time"
-                                           aria-describedby="basic-addon3">
+                                           aria-describedby="basic-addon3" disabled>
                                     <button type="button" class="btn btn-warning update-goal"
                                             id="cancel-update-goal">Cancel
                                     </button>
@@ -76,10 +84,20 @@
             $('#goal-info').show();
             $('#goal-edit-group').attr('hidden', true);
         })
+        $('#pick-date').on('change', function () {
+            if (this.checked === true) {
+                $('#goal-date').removeAttr('disabled');
+                $('#goal-time').removeAttr('disabled');
+            } else {
+                $('#goal-date').attr('disabled', true);
+                $('#goal-time').attr('disabled', true);
+            }
+        });
         $('#update-goal').on('click', function () {
             $('.alert').remove();
             let name = $('#goal-name').val();
             let message = $('#goal-message').val();
+            let updateNotificationDate = $('#pick-date').prop('checked');
             let date = $('#goal-date').val();
             let time = $('#goal-time').val();
             let goalNotification = date + ' ' + time;
@@ -90,7 +108,8 @@
                 data: {
                     'name': name,
                     'message': message,
-                    'notify_at': goalNotification
+                    'notify_at': goalNotification,
+                    'updateNotificationDate': updateNotificationDate
                 },
                 success: function () {
                     window.location.reload();

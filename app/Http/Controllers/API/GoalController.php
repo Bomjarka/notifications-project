@@ -39,9 +39,13 @@ class GoalController extends BaseControllers
         }
 
         $updatedData = $validator->getData();
+        $updatedData['updateNotificationDate'] = $updatedData['updateNotificationDate'] === 'true';
+
         $goal->name = $updatedData['name'];
         $goal->message = $updatedData['message'];
-        $goal->notify_at = $updatedData['notify_at'];
+        if ($updatedData['updateNotificationDate'] === true) {
+            $goal->notify_at = $updatedData['notify_at'];
+        }
         $goal->save();
 
         return $this->sendSuccess($goal, 'Goal - ' . $goal->id . ' updated');
