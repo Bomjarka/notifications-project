@@ -22,10 +22,13 @@
 @endsection
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $.get('{{ route('api.user.goals.index', auth()->user()->id) }}',)
+        let user_id = {{ auth()->user()->id }};
+        $.get('{{ route('api.goals.index') }}', {
+            'user_id': user_id
+        })
             .done(function (response) {
                 if (response['success'] === true) {
-                    if (response['data'] === null) {
+                    if (response['data'].length === 0) {
                         $('#user-goals').append($('' + '<h2>No goals</h2>'));
                     }
                     let goals = response['data'];
@@ -34,7 +37,7 @@
                         let route = window.location.href + '/' + goal['id'];
                         $('#user-goal').append($('' +
                             '<div class="card">' +
-                            '<div class="card-body-'+ goal["id"]+ '">' +
+                            '<div class="card-body-' + goal["id"] + '">' +
                             '<a href="' + route + '"><h5 class="card-title">' + goal['name'] + '</h5></a>' +
                             '<p class="card-text">Goal message: ' + goal['message'] + '</p>' +
                             '</div>' +
