@@ -43,8 +43,9 @@
         let goalNotificationDate = $('#goal-notification-date').val();
         let goalNotificationTime = $('#goal-notification-time').val();
         let goalNotification = goalNotificationDate + ' ' + goalNotificationTime
-        $.post('{{ route('api.user.goals.store', auth()->user()->id) }}',
+        $.post('{{ route('api.goals.store') }}',
             {
+                'user_id': {{ auth()->user()->id }},
                 'name': goalName,
                 'message': goalMessage,
                 'notify_at': goalNotification,

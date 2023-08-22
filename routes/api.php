@@ -19,8 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/user/{user}/goals', [GoalController::class, 'index'])->name('api.user.goals.index');
-Route::post('/user/{user}/goals', [GoalController::class, 'store'])->name('api.user.goals.store');
+Route::get('/goals', [GoalController::class, 'index'])->name('api.goals.index');
+Route::post('/goals', [GoalController::class, 'store'])->name('api.goals.store');
 Route::get('/goals/{goal}', [GoalController::class, 'show'])->name('api.goal.show');
 Route::delete('/goals/{goal}', [GoalController::class, 'delete'])->name('api.goal.delete');
 Route::put('/goals/{goal}', [GoalController::class, 'update'])->name('api.goal.update');

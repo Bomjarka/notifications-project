@@ -9,9 +9,23 @@ use Illuminate\Support\Facades\Validator;
 
 class GoalController extends BaseControllers
 {
-    public function index(User $user)
+    public function index(Request $request)
     {
-        return $this->sendSuccess($user->goals, 'All user goals');
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|int',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->messages()->all());
+        }
+
+        $user = User::find($validator->getData()['user_id']);
+
+        if ($user) {
+            return $this->sendSuccess($user->goals, 'All user goals');
+        }
+
+        return $this->sendError('User - ' . $validator->getData()['user_id'] . ' not found', []);
     }
 
     public function show(Goal $goal)
@@ -51,9 +65,10 @@ class GoalController extends BaseControllers
         return $this->sendSuccess($goal, 'Goal - ' . $goal->id . ' updated');
     }
 
-    public function store(User $user, Request $request)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'user_id' => 'required|int',
             'name' => 'required|string',
             'message' => 'required|string',
             'notify_at' => 'nullable|date',
@@ -63,7 +78,7 @@ class GoalController extends BaseControllers
             return $this->sendError('Validation Error.', $validator->messages()->all());
         }
 
-        $goalData = array_merge($validator->getData(), ['user_id' => $user->id]);
+        $goalData = $validator->getData();
         $goal = new Goal();
         $goal->name = $goalData['name'];
         $goal->message = $goalData['message'];
